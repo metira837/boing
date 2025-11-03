@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinica - Home</title>
+    <link rel="stylesheet" href="../utils/css/style.css">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .topnav {
+            overflow: hidden;
+            background-color: #1e1e1e;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .logo img {
+            height: 45px;
+            width: 45px;
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 0 10px rgba(150, 150, 255, 0.5);
+        }
+
+        .logo span {
+            color: #e0e0e0;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .topnav a {
+            color: #e0e0e0;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .topnav a:hover {
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        .topnav a.active {
+            background-color: #2E8B57;
+            color: #ffffff;
+        }
+
+        .notifications-container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="topnav">
+        <div class="logo">
+            <img src="../utils/img/Logo.png" alt="Logo">
+            <span>Clinica</span>
+        </div>
+        <a class="active" href="../templates/Dashboard_enfermeiro_De_Triagem.html">Dashboard</a>
+        <a href="../templates/Pacientes.html">Pacientes</a>
+        <a href="../templates/Fila_De_Espera.html">Fila De Espera</a>
+        <a href="../templates/login.html">Sair</a>
+    </div>
+</body>
+</html>
