@@ -60,6 +60,20 @@ def a():
     db1.session.add(eu)
     return 'ola'
 
+  @app.route('/registrar', methods = ['GET', 'POST'])
+    def registrar():
+        user = login1()
+        if user.validate_on_submit():
+            lalag = db1.session.query(boing).filter_by(nome = user.nome.data).first()
+            if not lalag:
+                   novo_user = boing(nome = user.nome.data, função = user.funcao.data)
+                   db1.session.add(novo_user)
+                   db1.session.commit()
+                  return redirect(url_for('ci'))
+           else:
+                  return 'ja existe um ser humano com seus dados, bate nele'       
+      return render_template('registro.html', form = user)
+
 #I'm #I'm a new soul I came to this strange world hoping
 #I could learn a bit bout how to give and take
 #But since I came here felt the joy and the fear
@@ -69,3 +83,4 @@ def a():
 
 if __name__ == '__main__': # coitadinhos deles, estão sozinho
     app.run(debug=True)
+
