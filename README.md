@@ -1,2 +1,0 @@
-# boing
-trabalho_escolar
