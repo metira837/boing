@@ -59,7 +59,6 @@ BEGIN
         numero := floor(random() * 100);
         novo_ticket := letra || lpad(numero::TEXT, 2, '0');
 
-        -- 👇 AQUI ESTÁ A CORREÇÃO
         IF NOT EXISTS (SELECT 1 FROM pacientes WHERE ticket = novo_ticket) THEN
             RETURN novo_ticket;
         END IF;
