@@ -23,7 +23,7 @@
             <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a>
             <a href="{{ url_for('funcionarios_list') }}">Funcionários</a>
             <a href="{{ url_for('recepcao') }}">Recepção</a>
-            :<a href="{{ url_for('enfermagem') }}">Detalhes</a>
+            <a href="{{ url_for('enfermagem') }}">Detalhes</a>
             <a href="{{ url_for('sair') }}">Sair</a>
         </nav>
 
@@ -31,12 +31,28 @@
         <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
     </div>
 
-    <!-- Conteúdo do Flask-Admin -->
+    <!-- Conteúdo que o Flask-Admin vai injetar -->
     <div class="content">
         {% block body %}
-            {{ body }}
         {% endblock %}
     </div>
 
 </body>
 </html>
+
+{% extends "base.html" %}
+
+{% block title %}Painel - {{ title }}{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    {{ admin_view.css() }}
+    {{ admin_view.js() }}
+{% endblock %}
+
+{% block body %}
+
+    <!-- Conteúdo do Flask-Admin dentro do seu layout -->
+    {{ body }}
+
+{% endblock %}
