@@ -1,58 +1,56 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Painel - Flask Admin{% endblock %}</title>
+    <title>{% block title %}Painel - Flask Admin{% endblock %}</title><!-- CSS principal -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
-    <!-- CSS principal -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% block head %}{% endblock %}
 
-    {% block head %}{% endblock %}
-</head>
+</head><body><!-- Sidebar -->
+<div class="sidebar">
+    <h2>Clínica Lotus</h2>
 
-<body>
+    <nav>
+        <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a>
+        <a href="{{ url_for('funcionarios_list') }}">Funcionários</a>
+        <a href="{{ url_for('recepcao') }}">Recepção</a>
+        <a href="{{ url_for('enfermagem') }}">Detalhes</a>
+        <a href="{{ url_for('sair') }}">Sair</a>
+    </nav>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>Clínica Lotus</h2>
+    <!-- Scripts do SITE (não do Admin) -->
+    {% block site_scripts %}
+    <button class="btn" onclick="toggleTheme()">Alternar Tema</button>
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    {% endblock %}
+</div>
 
-        <nav>
-            <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a>
-            <a href="{{ url_for('funcionarios_list') }}">Funcionários</a>
-            <a href="{{ url_for('recepcao') }}">Recepção</a>
-            <a href="{{ url_for('enfermagem') }}">Detalhes</a>
-            <a href="{{ url_for('sair') }}">Sair</a>
-        </nav>
-
-        <button class="btn" onclick="toggleTheme()">Alternar Tema</button>
-        <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
-    </div>
-
-    <!-- Conteúdo que o Flask-Admin vai injetar -->
-    <div class="content">
-        {% block body %}
-        {% endblock %}
-    </div>
+<!-- Área de conteúdo (Admin ou Site) -->
+<div class="content">
+    {% block body %}
+    {% endblock %}
+</div>
 
 </body>
 </html>
 
 {% extends "base.html" %}
 
-{% block title %}Painel - {{ title }}{% endblock %}
+{% block title %}Admin - {{ title }}{% endblock %}
 
 {% block head %}
-    {{ super() }}
-    {{ admin_view.css() }}
-    {{ admin_view.js() }}
+{{ super() }}
+{{ admin_view.css() }}
+{{ admin_view.js() }}
+{% endblock %}
+
+{% block site_scripts %}
+{# Deixa vazio para impedir que scripts do site rodem no Admin #}
 {% endblock %}
 
 {% block body %}
-
-    <!-- Conteúdo do Flask-Admin dentro do seu layout -->
-    {{ body }}
-
+{{ body }}
 {% endblock %}
