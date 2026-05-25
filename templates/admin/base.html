@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Painel{% endblock %}</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/base.css') }}">
+</head>
+
+<body>
+
+<!-- BOTÃO MOBILE -->
+<button class="mobile-toggle" onclick="toggleSidebar()">
+    <i class="fa-solid fa-bars"></i>
+</button>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+
+    <!-- LOGO -->
+    <div class="logo">
+        <i class="fa-solid fa-heart-pulse"></i>
+
+        <h2>
+            Cuidar <span>&</span><br>
+            Conectar
+        </h2>
+    </div>
+
+    <!-- USER -->
+    <div class="user-box">
+        <h3>{{ current_user.nome }}</h3>
+        <p>{{ current_user.funcao }}</p>
+    </div>
+
+    {% set func = (current_user.funcao or "").strip().lower() %}
+
+    <!-- MENU -->
+    <nav class="menu">
+
+        {% if func == "administrador" %}
+            <a href="{{ url_for('admin_dashboard') }}">
+                <i class="fa-solid fa-chart-line"></i>
+                Dashboard Admin
+            </a>
+
+            <a href="{{ url_for('funcionarios_list') }}">
+                <i class="fa-solid fa-users"></i>
+                Funcionários
+            </a>
+
+            <a href="{{ url_for('recepcao_list') }}">
+                <i class="fa-solid fa-desktop"></i>
+                Recepção
+            </a>
+
+            <a href="{{ url_for('triagem_dashboard') }}">
+                <i class="fa-solid fa-stethoscope"></i>
+                Triagem
+            </a>
+
+            <a href="{{ url_for('dashboard_pacientes') }}">
+                <i class="fa-solid fa-user-injured"></i>
+                Pacientes
+            </a>
+
+            <a href="{{ url_for('dashboard_medico') }}">
+                <i class="fa-solid fa-user-doctor"></i>
+                Médico
+            </a>
+
+            <a href="{{ url_for('guia') }}">
+                <i class="fa-solid fa-book-medical"></i>
+                Orientações
+            </a>
+
+            <a href="{{ url_for('painel_senha') }}">
+                <i class="fa-solid fa-tv"></i>
+                Painel de Senha
+            </a>
+        {% endif %}
+
+        {% if func == "recepcionista" %}
+            <a href="{{ url_for('recepcao_list') }}">
+                <i class="fa-solid fa-desktop"></i>
+                Recepção
+            </a>
+
+            <a href="{{ url_for('dashboard_pacientes') }}">
+                <i class="fa-solid fa-user-injured"></i>
+                Pacientes
+            </a>
+
+            <a href="{{ url_for('guia') }}">
+                <i class="fa-solid fa-book-medical"></i>
+                Orientações
+            </a>
+        {% endif %}
+
+        {% if func == "enfermeiro" %}
+            <a href="{{ url_for('triagem_dashboard') }}">
+                <i class="fa-solid fa-stethoscope"></i>
+                Triagem
+            </a>
+
+            <a href="{{ url_for('dashboard_pacientes') }}">
+                <i class="fa-solid fa-user-injured"></i>
+                Pacientes
+            </a>
+
+            <a href="{{ url_for('guia') }}">
+                <i class="fa-solid fa-book-medical"></i>
+                Orientações
+            </a>
+        {% endif %}
+
+        {% if func == "medico" %}
+            <a href="{{ url_for('dashboard_medico') }}">
+                <i class="fa-solid fa-user-doctor"></i>
+                Médico
+            </a>
+
+            <a href="{{ url_for('dashboard_pacientes') }}">
+                <i class="fa-solid fa-user-injured"></i>
+                Pacientes
+            </a>
+
+            <a href="{{ url_for('guia') }}">
+                <i class="fa-solid fa-book-medical"></i>
+                Orientações
+            </a>
+        {% endif %}
+
+    </nav>
+
+    <!-- FOOTER -->
+    <div class="sidebar-footer">
+
+        <button class="btn-theme" onclick="toggleTheme()">
+            <i class="fa-solid fa-moon"></i>
+            Alternar Tema
+        </button>
+
+        <button class="btn-logout"
+        onclick="window.location.href='{{ url_for('sair') }}'">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Sair
+        </button>
+
+    </div>
+
+</aside>
+
+<!-- CONTENT -->
+<main class="content">
+
+    <div class="content-box">
+        {% block content %}{% endblock %}
+    </div>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,651 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+Pacientes
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<div class="patients-page">
+
+    <div class="patients-header">
+
+        <div class="patients-header-left">
+
+            <span class="patients-badge">
+
+                <i class="fa-solid fa-heart-pulse"></i>
+
+                Gestão Hospitalar
+
+            </span>
+
+            <h1>
+                Pacientes
+            </h1>
+
+            <p>
+                Gerencie pacientes, histórico médico e atendimentos.
+            </p>
+
+        </div>
+
+        <div class="patients-header-actions">
+
+            <a href="{{ url_for('paciente_novo') }}"
+               class="patients-btn-primary">
+
+                <i class="fa-solid fa-plus"></i>
+
+                Novo Paciente
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- =========================================================
+         SEARCH
+    ========================================================= -->
+
+    <div class="patients-search-wrapper">
+
+        <div class="patients-search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                id="buscarPaciente"
+                placeholder="Buscar paciente por nome, documento ou ID..."
+                onkeyup="filtrarPacientes()"
+            >
+
+        </div>
+
+    </div>
+
+    <!-- =========================================================
+         GRID
+    ========================================================= -->
+
+    <div class="patients-grid"
+         id="patientsGrid">
+
+        {% for paciente in dados %}
+
+        <div class="patient-card"
+
+             onclick="abrirPaciente(this)"
+
+             data-search="
+                {{ paciente.nome_completo or '' }}
+                {{ paciente.documento or '' }}
+                {{ paciente.id }}
+             "
+
+             data-id="{{ paciente.id }}"
+             data-nome="{{ paciente.nome_completo or 'Não informado' }}"
+             data-foto="{{ paciente.foto or '' }}"
+             data-email="{{ paciente.email or 'Não informado' }}"
+             data-documento="{{ paciente.documento or 'Não informado' }}"
+             data-contato="{{ paciente.contato or 'Não informado' }}"
+             data-plano="{{ paciente.plano or 'Não informado' }}"
+             data-sexo="{{ paciente.sexo or 'Não informado' }}"
+             data-nascimento="{{ paciente.data_nascimento or 'Não informado' }}"
+             data-responsavel="{{ paciente.responsavel or 'Não informado' }}"
+             data-observacoes="{{ paciente.observacoes_cadastro or 'Sem observações' }}"
+        >
+
+            <!-- GLOW -->
+
+            <div class="patient-card-glow"></div>
+
+            <!-- TOP -->
+
+            <div class="patient-card-top">
+
+                <div class="patient-avatar">
+
+                    {% if paciente.foto %}
+
+                    <img src="{{ url_for('static', filename='uploads/' ~ paciente.foto) }}"
+                         alt="Paciente">
+
+                    {% else %}
+
+                    <i class="fa-solid fa-user"></i>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="patient-main-info">
+
+                    <h3>
+                        {{ paciente.nome_completo }}
+                    </h3>
+
+                    <span>
+                        Paciente #{{ paciente.id }}
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- BODY -->
+
+            <div class="patient-card-body">
+
+                <div class="patient-info-row">
+
+                    <span>Documento</span>
+
+                    <strong>
+                        {{ paciente.documento or 'Não informado' }}
+                    </strong>
+
+                </div>
+
+                <div class="patient-info-row">
+
+                    <span>Contato</span>
+
+                    <strong>
+                        {{ paciente.contato or 'Não informado' }}
+                    </strong>
+
+                </div>
+
+                <div class="patient-info-row">
+
+                    <span>Plano</span>
+
+                    <strong>
+                        {{ paciente.plano or 'Não informado' }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <!-- FOOTER -->
+
+            <div class="patient-card-footer">
+
+                <div class="patient-status">
+
+                    <span class="status-dot"></span>
+
+                    Ativo
+
+                </div>
+
+                <div class="patient-actions">
+
+                    <a href="{{ url_for('paciente_editar', id=paciente.id) }}"
+                       class="patient-action-btn edit"
+                       onclick="event.stopPropagation()">
+
+                        <i class="fa-solid fa-pen"></i>
+
+                    </a>
+
+                    <form
+                        action="{{ url_for('paciente_excluir', id=paciente.id) }}"
+                        method="POST"
+                        onclick="event.stopPropagation()"
+                        onsubmit="return confirm('Deseja excluir este paciente?')"
+                    >
+
+                        <button type="submit"
+                                class="patient-action-btn delete">
+
+                            <i class="fa-solid fa-trash"></i>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     MODAL OVERLAY
+========================================================= -->
+
+<div class="patient-modal-overlay"
+     id="patientOverlay"
+     onclick="fecharPaciente()">
+</div>
+
+<!-- =========================================================
+     MODAL
+========================================================= -->
+
+<div class="patient-modal"
+     id="patientModal">
+
+    <!-- =========================================================
+         SIDEBAR
+    ========================================================= -->
+
+    <div class="patient-modal-sidebar">
+
+        <button class="patient-close-btn"
+                onclick="fecharPaciente()">
+
+            <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+        <!-- PROFILE -->
+
+        <div class="patient-modal-profile">
+
+            <div class="patient-modal-avatar"
+                 id="modalAvatar">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+            <h2 id="modalNome">
+                Nome
+            </h2>
+
+            <p id="modalId">
+                Paciente #000
+            </p>
+
+        </div>
+
+        <!-- QUICK INFO -->
+
+        <div class="patient-modal-quickinfo">
+
+            <div class="quick-info-item">
+
+                <span>Contato</span>
+
+                <strong id="modalContato"></strong>
+
+            </div>
+
+            <div class="quick-info-item">
+
+                <span>Email</span>
+
+                <strong id="modalEmail"></strong>
+
+            </div>
+
+            <div class="quick-info-item">
+
+                <span>Plano</span>
+
+                <strong id="modalPlano"></strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================================================
+         CONTENT
+    ========================================================= -->
+
+    <div class="patient-modal-content">
+
+        <!-- =========================================================
+             TABS
+        ========================================================= -->
+
+        <div class="patient-tabs">
+
+            <button class="patient-tab active"
+                    onclick="trocarTab(event, 'infoTab')">
+
+                <i class="fa-solid fa-user"></i>
+
+                Informações
+
+            </button>
+
+            <button class="patient-tab"
+                    onclick="trocarTab(event, 'historicoTab')">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+                Histórico
+
+            </button>
+
+            <button class="patient-tab"
+                    onclick="trocarTab(event, 'atendimentoTab')">
+
+                <i class="fa-solid fa-stethoscope"></i>
+
+                Atendimentos
+
+            </button>
+
+            <button class="patient-tab"
+                    onclick="trocarTab(event, 'obsTab')">
+
+                <i class="fa-solid fa-note-sticky"></i>
+
+                Observações
+
+            </button>
+
+        </div>
+
+        <!-- =========================================================
+             TAB INFO
+        ========================================================= -->
+
+        <div class="patient-tab-content active"
+             id="infoTab">
+
+            <div class="patient-details-grid">
+
+                <div class="detail-card">
+
+                    <span>Documento</span>
+
+                    <strong id="modalDocumento"></strong>
+
+                </div>
+
+                <div class="detail-card">
+
+                    <span>Sexo</span>
+
+                    <strong id="modalSexo"></strong>
+
+                </div>
+
+                <div class="detail-card">
+
+                    <span>Nascimento</span>
+
+                    <strong id="modalNascimento"></strong>
+
+                </div>
+
+                <div class="detail-card">
+
+                    <span>Responsável</span>
+
+                    <strong id="modalResponsavel"></strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- =========================================================
+             TAB HISTÓRICO
+        ========================================================= -->
+
+        <div class="patient-tab-content"
+             id="historicoTab">
+
+            <div class="timeline">
+
+                <!-- EXEMPLO -->
+
+                <div class="timeline-item">
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-content">
+
+                        <span class="timeline-date">
+
+                            14/05/2026 - 14:32
+
+                        </span>
+
+                        <h4>
+                            Entrada no Sistema
+                        </h4>
+
+                        <p>
+                            Cadastro realizado com sucesso.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- =========================================================
+             TAB ATENDIMENTOS
+        ========================================================= -->
+
+        <div class="patient-tab-content"
+             id="atendimentoTab">
+
+            <div class="attendance-list">
+
+                <!-- CARD -->
+
+                <div class="attendance-card">
+
+                    <div class="attendance-top">
+
+                        <div>
+
+                            <span class="attendance-date">
+
+                                15/05/2026 - 09:42
+
+                            </span>
+
+                            <h4>
+                                Atendimento Clínico
+                            </h4>
+
+                        </div>
+
+                        <span class="attendance-status">
+
+                            Finalizado
+
+                        </span>
+
+                    </div>
+
+                    <div class="attendance-body">
+
+                        <div class="attendance-section">
+
+                            <span>Sintomas</span>
+
+                            <p>
+                                Dor de cabeça e febre.
+                            </p>
+
+                        </div>
+
+                        <div class="attendance-section">
+
+                            <span>Diagnóstico</span>
+
+                            <p>
+                                Possível virose.
+                            </p>
+
+                        </div>
+
+                        <div class="attendance-section">
+
+                            <span>Prescrição</span>
+
+                            <p>
+                                Dipirona e repouso.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- =========================================================
+             TAB OBS
+        ========================================================= -->
+
+        <div class="patient-tab-content"
+             id="obsTab">
+
+            <div class="patient-obs-box">
+
+                <p id="modalObservacoes"></p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     SCRIPT
+========================================================= -->
+
+<script>
+
+function filtrarPacientes(){
+
+    const input =
+        document
+        .getElementById("buscarPaciente")
+        .value
+        .toLowerCase();
+
+    const cards =
+        document.querySelectorAll(".patient-card");
+
+    cards.forEach(card => {
+
+        const texto =
+            card.dataset.search.toLowerCase();
+
+        card.style.display =
+            texto.includes(input)
+            ? "flex"
+            : "none";
+
+    });
+
+}
+
+function abrirPaciente(card){
+
+    document
+        .getElementById("patientModal")
+        .classList.add("active");
+
+    document
+        .getElementById("patientOverlay")
+        .classList.add("active");
+
+    document.getElementById("modalNome").innerText =
+        card.dataset.nome;
+
+    document.getElementById("modalId").innerText =
+        "Paciente #" + card.dataset.id;
+
+    document.getElementById("modalContato").innerText =
+        card.dataset.contato;
+
+    document.getElementById("modalEmail").innerText =
+        card.dataset.email;
+
+    document.getElementById("modalPlano").innerText =
+        card.dataset.plano;
+
+    document.getElementById("modalDocumento").innerText =
+        card.dataset.documento;
+
+    document.getElementById("modalSexo").innerText =
+        card.dataset.sexo;
+
+    document.getElementById("modalNascimento").innerText =
+        card.dataset.nascimento;
+
+    document.getElementById("modalResponsavel").innerText =
+        card.dataset.responsavel;
+
+    document.getElementById("modalObservacoes").innerText =
+        card.dataset.observacoes;
+
+}
+
+function fecharPaciente(){
+
+    document
+        .getElementById("patientModal")
+        .classList.remove("active");
+
+    document
+        .getElementById("patientOverlay")
+        .classList.remove("active");
+
+}
+
+function trocarTab(event, tabId){
+
+    const tabs =
+        document.querySelectorAll(".patient-tab");
+
+    const contents =
+        document.querySelectorAll(".patient-tab-content");
+
+    tabs.forEach(tab => {
+        tab.classList.remove("active");
+    });
+
+    contents.forEach(content => {
+        content.classList.remove("active");
+    });
+
+    event.currentTarget.classList.add("active");
+
+    document
+        .getElementById(tabId)
+        .classList.add("active");
+
+}
+
+</script>
+
+{% endblock %}

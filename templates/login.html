@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Clínica Cuidar E Conectar - Login</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style_login.css') }}">
+
+<!-- Font Awesome -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- TOPO -->
+    <header class="topo">
+
+        <div class="logo">
+            +<span>Cuidar & Conectar</span>
+        </div>
+
+        <div class="top-links">
+
+            <div class="modo" onclick="toggleTheme()">
+                <div class="toggle">
+                    <div class="icons">
+                        <i class="fa-solid fa-moon"></i>
+                        <i class="fa-solid fa-sun"></i>
+                    </div>
+                    <div class="ball"></div>
+                </div>
+
+                <div class="tooltip">
+                    Alternar tema claro/escuro!
+                </div>
+            </div>
+
+            <div class="divisor"></div>
+
+            <div class="ajuda low-cortisol">
+                <i class="fa-regular fa-circle-question"></i>
+                <span>Precisa de ajuda?</span>
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- CONTEÚDO -->
+    <div class="conteudo">
+
+        <!-- LADO ESQUERDO -->
+        <section class="left">
+
+            <div class="hero-text">
+
+                <h1>
+                    Cuidar<br>
+                    é transformar<br>
+                    <span>vidas.</span>
+                </h1>
+
+                <p>
+                    Saúde com acolhimento, tecnologia
+                    e excelência para o bem-estar.
+                </p>
+
+            </div>
+
+
+            <div class="beneficios">
+
+                <div class="item">
+                    <i class="fa-solid fa-stethoscope"></i>
+                    <h3>Atendimento Humanizado</h3>
+                    <p>Você no centro do cuidado.</p>
+                </div>
+
+                <div class="item">
+                    <i class="fa-solid fa-shield-heart"></i>
+                    <h3>Profissionais Especializados</h3>
+                    <p>Equipe qualificada e experiente.</p>
+                </div>
+
+                <div class="item">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                    <h3>Tecnologia Avançada</h3>
+                    <p>Mais precisão para seus diagnósticos.</p>
+                </div>
+
+                <div class="item">
+                    <i class="fa-regular fa-calendar"></i>
+                    <h3>Atendimento Fácil</h3>
+                    <p>Mais praticidade para você.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- LOGIN -->
+        <section class="login-box">
+
+            <h2>Bem-vindo(a)!</h2>
+
+            <p class="sub">
+                Entre para acessar sua área da saúde.
+            </p>
+
+            <!-- FORMULÁRIO FLASK -->
+            <form action="/" method="POST">
+
+                {{ form.hidden_tag() }}
+
+                <!-- USUÁRIO -->
+                <label for="usuario">Usuário</label>
+
+                <div class="input-box">
+                    <i class="fa-regular fa-envelope"></i>
+
+                    {{ form.usuario(
+                        id="usuario",
+                        class_="input-field",
+                        placeholder="Digite seu usuário",
+                        autocomplete="off",
+                        required=True
+                    ) }}
+                </div>
+
+                <!-- SENHA -->
+                <label for="senha">Senha</label>
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    {{ form.senha(
+                        id="senha",
+                        class_="input-field",
+                        placeholder="Digite sua senha",
+                        required=True
+                    ) }}
+
+                    <i id="toggleSenha"
+                    class="fa-regular fa-eye-slash"
+                    onclick="toggleSenha()"></i>
+
+                </div>
+
+                <div class="esqueceu">
+                    <a href="#">Esqueceu sua senha?</a>
+                </div>
+
+                <button type="submit">
+                    Entrar
+                </button>
+
+            </form>
+
+            <div class="ou">
+                <span></span>
+                ou
+                <span></span>
+            </div>
+
+            <p class="cadastro">
+                Ainda não tem uma conta?
+                <a href="#">Cadastre-se</a>
+            </p>
+
+        </section>
+
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
+</body>
+</html>

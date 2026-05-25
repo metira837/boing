@@ -1,0 +1,108 @@
+{% extends "admin/base.html" %}
+{% block title %}Dashboard Recepção{% endblock %}
+
+{% block content %}
+
+<div class="rec-dashboard">
+
+    <!-- HEADER -->
+    <div class="rec-header">
+
+        <div>
+            <h1>Painel da Recepção</h1>
+            <p>Acompanhamento em tempo real dos atendimentos</p>
+        </div>
+
+        <a class="rec-btn-new"
+           href="{{ url_for('recepcao_selecionar') }}">
+            + Novo Atendimento
+        </a>
+
+    </div>
+
+    <!-- RESUMO -->
+    <div class="rec-stats">
+
+        <div class="rec-card">
+            <h2>{{ dados|length }}</h2>
+            <p>Total ativos</p>
+        </div>
+
+        <div class="rec-card">
+            <h2>{{ dados|selectattr("status","equalto","RECEPÇÃO")|list|length }}</h2>
+            <p>Na recepção</p>
+        </div>
+
+        <div class="rec-card">
+            <h2>{{ dados|selectattr("status","equalto","TRIAGEM")|list|length }}</h2>
+            <p>Em triagem</p>
+        </div>
+
+        <div class="rec-card">
+            <h2>{{ dados|selectattr("status","equalto","MÉDICO")|list|length }}</h2>
+            <p>Em atendimento</p>
+        </div>
+
+    </div>
+
+    <!-- LISTA DE ATENDIMENTOS -->
+    <div class="rec-table-box">
+
+        <table class="rec-table">
+
+            <thead>
+                <tr>
+                    <th>Paciente</th>
+                    <th>Documento</th>
+                    <th>Chegada</th>
+                    <th>Status atual</th>
+                    <th>Urgência</th>
+                    <th>Responsável</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for r in dados %}
+
+                <tr>
+
+                    <td class="rec-name">
+                        {{ r.nome_completo }}
+                    </td>
+
+                    <td>{{ r.Documento }}</td>
+
+                    <td>
+                        {{ r.horario_chegada.strftime('%H:%M') if r.horario_chegada else '' }}
+                    </td>
+
+                    <td>
+                        <span class="status-badge {{ r.status|lower }}">
+                            {{ r.status or 'RECEPÇÃO' }}
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="urgencia {{ r.urgencia_recepcao|lower }}">
+                            {{ r.urgencia_recepcao }}
+                        </span>
+                    </td>
+
+                    <td>
+                        {{ r.responsavel_recepcao }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

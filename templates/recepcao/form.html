@@ -1,0 +1,122 @@
+{% extends "admin/base.html" %}
+{% block title %}Novo Atendimento{% endblock %}
+
+{% block content %}
+
+<div class="rec-form-page">
+
+    <!-- HEADER -->
+    <div class="rec-form-header">
+
+        <div>
+            <div class="rec-badge">
+                RECEPÇÃO • NOVO ATENDIMENTO
+            </div>
+
+            <h1>Iniciar Atendimento</h1>
+            <p>Selecione um paciente e defina os dados iniciais da recepção</p>
+        </div>
+
+        <a href="{{ url_for('recepcao_list') }}" class="rec-back-btn">
+            Voltar
+        </a>
+
+    </div>
+
+    <!-- FORM CARD -->
+    <form method="POST" class="rec-form-card">
+
+        <!-- PACIENTE -->
+        <div class="rec-group">
+
+            <label>Paciente cadastrado</label>
+
+            <select name="paciente_id" class="rec-input" required>
+
+                <option value="">Selecione um paciente</option>
+
+                {% for p in pacientes %}
+                    <option value="{{ p.id }}">
+                        {{ p.nome_completo }} • {{ p.documento }}
+                    </option>
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <!-- URGÊNCIA -->
+        <div class="rec-group">
+
+            <label>Classificação de urgência</label>
+
+            <select name="urgencia_recepcao" class="rec-input">
+
+                <option>BAIXA</option>
+                <option>MEDIA</option>
+                <option>ALTA</option>
+                <option>EMERGÊNCIA</option>
+
+            </select>
+
+        </div>
+
+        <!-- DESTINO -->
+        <div class="rec-group">
+
+            <label>Destino inicial</label>
+
+            <select name="destino" class="rec-input">
+
+                <option>TRIAGEM</option>
+                <option>MÉDICO</option>
+                <option>VACINAÇÃO</option>
+
+            </select>
+
+        </div>
+
+        <!-- OBS -->
+        <div class="rec-group full">
+
+            <label>Observações da recepção</label>
+
+            <textarea name="observacoes_recepcao"
+                      class="rec-textarea"
+                      placeholder="Ex: paciente com dor, chegou acompanhado..."></textarea>
+
+        </div>
+
+        <!-- RESPONSÁVEL -->
+        <div class="rec-group">
+
+            <label>Responsável</label>
+
+            <input type="text"
+                   name="responsavel_recepcao"
+                   class="rec-input"
+                   value="{{ current_user.nome_completo }}"
+                   readonly>
+
+        </div>
+
+        <!-- BOTÕES -->
+        <div class="rec-actions">
+
+            <a href="{{ url_for('recepcao_list') }}"
+               class="rec-btn-cancel">
+                Cancelar
+            </a>
+
+            <button type="submit"
+                    class="rec-btn-save">
+                Iniciar Atendimento
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

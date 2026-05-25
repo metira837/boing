@@ -1,0 +1,195 @@
+{% extends "admin/base.html" %}
+{% block title %}Funcionários{% endblock %}
+
+{% block content %}
+
+<div class="func-header">
+
+    <div>
+        <h1>Funcionários</h1>
+
+        <p>
+            Gerencie os usuários do sistema
+        </p>
+    </div>
+
+    <a class="func-btn-new"
+       href="{{ url_for('funcionario_novo') }}">
+
+        + Novo funcionário
+
+    </a>
+
+</div>
+
+<div class="func-table-box">
+
+    <table class="func-table">
+
+        <thead>
+
+            <tr>
+
+                <th>ID</th>
+                <th>Nome Completo</th>
+                <th>Usuário</th>
+                <th>Função</th>
+                <th>Sexo</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>Status</th>
+                <th>Último Login</th>
+                <th>Data Criação</th>
+                <th>Ações</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for f in dados %}
+
+            <tr>
+
+                <!-- ID -->
+                <td>
+                    {{ f.id }}
+                </td>
+
+                <!-- NOME -->
+                <td>
+                    {{ f.nome_completo }}
+                </td>
+
+                <!-- USUÁRIO -->
+                <td>
+                    {{ f.usuario }}
+                </td>
+
+                <!-- FUNÇÃO -->
+                <td>
+
+                    <span class="func-badge">
+                        {{ f.funcao }}
+                    </span>
+
+                </td>
+
+                <!-- SEXO -->
+                <td>
+                    {{ f.sexo or '-' }}
+                </td>
+
+                <!-- EMAIL -->
+                <td>
+                    {{ f.email or '-' }}
+                </td>
+
+                <!-- TELEFONE -->
+                <td>
+                    {{ f.telefone or '-' }}
+                </td>
+
+                <!-- STATUS -->
+                <td>
+
+                    {% if f.online %}
+
+                        <span class="status-online">
+                            Online
+                        </span>
+
+                    {% else %}
+
+                        <span class="status-offline">
+                            Offline
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+                <!-- ÚLTIMO LOGIN -->
+                <td>
+
+                    {% if f.ultimo_login %}
+
+                        {{ f.ultimo_login.strftime('%d/%m/%Y %H:%M') }}
+
+                    {% else %}
+
+                        -
+
+                    {% endif %}
+
+                </td>
+
+                <!-- DATA CRIAÇÃO -->
+                <td>
+
+                    {% if f.data_criacao %}
+
+                        {{ f.data_criacao.strftime('%d/%m/%Y %H:%M') }}
+
+                    {% else %}
+
+                        -
+
+                    {% endif %}
+
+                </td>
+
+                <!-- AÇÕES -->
+                <td class="func-actions">
+
+                    <!-- EDITAR -->
+                    <a href="{{ url_for('funcionarios_editar', id=f.id) }}"
+                       class="func-btn-edit"
+                       title="Editar funcionário">
+
+                        <i class="fas fa-edit"></i>
+
+                    </a>
+
+                    <!-- EXCLUIR -->
+                    <form action="{{ url_for('funcionarios_excluir', id=f.id) }}"
+                          method="POST"
+                          class="func-delete-form"
+                          onsubmit="return confirm('Deseja excluir este funcionário?')">
+
+                        <button type="submit"
+                                class="func-btn-delete"
+                                title="Excluir funcionário">
+
+                            <i class="fas fa-trash"></i>
+
+                        </button>
+
+                    </form>
+
+                </td>
+
+            </tr>
+
+            {% else %}
+
+            <tr>
+
+                <td colspan="11" class="func-empty">
+
+                    Nenhum funcionário encontrado.
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

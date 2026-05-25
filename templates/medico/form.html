@@ -1,0 +1,360 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Atendimento Médico{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/medico_atendimento.css') }}">
+
+<div class="med-att-page">
+
+    <!-- =========================================================
+        HEADER
+    ========================================================= -->
+    <div class="med-att-header">
+
+        <div>
+            <h1>{{ action }} Atendimento</h1>
+            <p>Painel completo de acompanhamento e finalização médica.</p>
+        </div>
+
+    </div>
+
+    <!-- =========================================================
+        GRID
+    ========================================================= -->
+    <div class="med-att-grid">
+
+        <!-- =========================================================
+            PACIENTE
+        ========================================================= -->
+        <div class="med-att-card">
+
+            <div class="med-att-card-header">
+                <h2>Informações do Paciente</h2>
+            </div>
+
+            <div class="med-info-list">
+
+                <div class="med-info-item">
+                    <span>Nome</span>
+                    <strong>{{ paciente.nome_completo }}</strong>
+                </div>
+
+                <div class="med-info-item">
+                    <span>Data de Nascimento</span>
+                    <strong>
+                        {{ paciente.data_nascimento.strftime('%d/%m/%Y') if paciente.data_nascimento else 'Não informado' }}
+                    </strong>
+                </div>
+
+                <div class="med-info-item">
+                    <span>Sexo</span>
+                    <strong>{{ paciente.sexo or 'Não informado' }}</strong>
+                </div>
+
+                <div class="med-info-item">
+                    <span>Contato</span>
+                    <strong>{{ paciente.contato or 'Não informado' }}</strong>
+                </div>
+
+                <div class="med-info-item">
+                    <span>Documento</span>
+                    <strong>{{ paciente.Documento or 'Não informado' }}</strong>
+                </div>
+
+                <div class="med-info-item">
+                    <span>Plano</span>
+                    <strong>{{ paciente.plano or 'Não informado' }}</strong>
+                </div>
+
+                <div class="med-info-item">
+                    <span>Tipo Atendimento</span>
+                    <strong>{{ paciente.atendimento or 'Não informado' }}</strong>
+                </div>
+
+                <div class="med-info-item">
+                    <span>Chegada</span>
+                    <strong>
+                        {% if paciente.horario_chegada %}
+                            {{ paciente.horario_chegada.strftime('%d/%m/%Y %H:%M') }}
+                        {% else %}
+                            Não informado
+                        {% endif %}
+                    </strong>
+                </div>
+
+            </div>
+
+            <!-- =========================================================
+                RECEPÇÃO
+            ========================================================= -->
+            <div class="med-section">
+
+                <div class="med-section-title">
+                    <h3>Recepção</h3>
+                </div>
+
+                <div class="med-info-list">
+
+                    <div class="med-info-item full">
+                        <span>Observações</span>
+                        <strong>{{ paciente.observacoes_recepcao or 'Não informado' }}</strong>
+                    </div>
+
+                    <div class="med-info-item">
+                        <span>Urgência</span>
+
+                        {% set urgencia_rec = paciente.urgencia_recepcao.lower() if paciente.urgencia_recepcao else 'baixa' %}
+
+                        <strong class="med-badge {{ urgencia_rec }}">
+                            {{ paciente.urgencia_recepcao or 'Não informado' }}
+                        </strong>
+                    </div>
+
+                    <div class="med-info-item">
+                        <span>Responsável</span>
+                        <strong>{{ paciente.responsavel_recepcao or 'Não informado' }}</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- =========================================================
+                TRIAGEM
+            ========================================================= -->
+            {% if paciente.triagem %}
+
+            <div class="med-section">
+
+                <div class="med-section-title">
+                    <h3>Triagem</h3>
+                </div>
+
+                <div class="med-info-list">
+
+                    {% for label, valor in [
+                        ("Ocupação", paciente.triagem.ocupacao),
+                        ("Temperatura", paciente.triagem.temperatura),
+                        ("Freq. Cardíaca", paciente.triagem.freq_cardiaca),
+                        ("Freq. Respiratória", paciente.triagem.freq_respiratoria),
+                        ("Peso", paciente.triagem.peso),
+                        ("Altura", paciente.triagem.altura),
+                        ("Pressão Arterial", paciente.triagem.pressao_arterial),
+                        ("Saturação", paciente.triagem.saturacao),
+                        ("Alergia", paciente.triagem.alergia),
+                        ("Escala de Dor", paciente.triagem.escala_de_dor),
+                        ("Toma Medicação", paciente.triagem.toma_medicacao),
+                        ("Cirurgia", paciente.triagem.cirugia_realizada)
+                    ] %}
+
+                    <div class="med-info-item">
+                        <span>{{ label }}</span>
+                        <strong>{{ valor or 'Não informado' }}</strong>
+                    </div>
+
+                    {% endfor %}
+
+                    <div class="med-info-item full">
+                        <span>Queixa Principal</span>
+                        <strong>{{ paciente.triagem.queixa_principal or 'Não informado' }}</strong>
+                    </div>
+
+                    <div class="med-info-item full">
+                        <span>Doenças Pré-existentes</span>
+                        <strong>{{ paciente.triagem.doencas_pre_existentes or 'Não informado' }}</strong>
+                    </div>
+
+                    <div class="med-info-item full">
+                        <span>Observações Triagem</span>
+                        <strong>{{ paciente.triagem.observacoes_triagem or 'Não informado' }}</strong>
+                    </div>
+
+                    {% set urgencia_tri = paciente.triagem.urgencia_triagem.lower() if paciente.triagem.urgencia_triagem else 'baixa' %}
+
+                    <div class="med-info-item">
+                        <span>Urgência</span>
+
+                        <strong class="med-badge {{ urgencia_tri }}">
+                            {{ paciente.triagem.urgencia_triagem or 'Não informado' }}
+                        </strong>
+                    </div>
+
+                    <div class="med-info-item">
+                        <span>Responsável</span>
+                        <strong>{{ paciente.triagem.responsavel_triagem or 'Não informado' }}</strong>
+                    </div>
+
+                    <div class="med-info-item">
+                        <span>Tabagista</span>
+                        <strong>
+                            {{ 'Sim' if paciente.triagem.tabagista else 'Não' }}
+                        </strong>
+                    </div>
+
+                    <div class="med-info-item">
+                        <span>Bebida Alcoólica</span>
+                        <strong>
+                            {{ 'Sim' if paciente.triagem.bebida_alcoolica else 'Não' }}
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+            <!-- =========================================================
+                MÉDICO
+            ========================================================= -->
+            {% if paciente.medico %}
+
+            <div class="med-section">
+
+                <div class="med-section-title">
+                    <h3>Último Atendimento Médico</h3>
+                </div>
+
+                <div class="med-info-list">
+
+                    <div class="med-info-item full">
+                        <span>Diagnóstico</span>
+                        <strong>{{ paciente.medico.diagnostico or 'Não informado' }}</strong>
+                    </div>
+
+                    <div class="med-info-item full">
+                        <span>Prescrição</span>
+                        <strong>{{ paciente.medico.prescricao or 'Não informado' }}</strong>
+                    </div>
+
+                    <div class="med-info-item full">
+                        <span>Feedback</span>
+                        <strong>{{ paciente.medico.feedback or 'Não informado' }}</strong>
+                    </div>
+
+                    <div class="med-info-item full">
+                        <span>Observações</span>
+                        <strong>{{ paciente.medico.observacoes_medico or 'Não informado' }}</strong>
+                    </div>
+
+                    <div class="med-info-item">
+                        <span>Responsável</span>
+                        <strong>{{ paciente.medico.responsavel_medico or 'Não informado' }}</strong>
+                    </div>
+
+                    <div class="med-info-item">
+                        <span>Finalizado</span>
+                        <strong>
+                            {{ 'Sim' if paciente.medico.finalizado_medico else 'Não' }}
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        <!-- =========================================================
+            FORMULÁRIO
+        ========================================================= -->
+        <div class="med-form-card">
+
+            <div class="med-att-card-header">
+                <h2>Finalizar Atendimento</h2>
+            </div>
+
+            <form method="POST" class="med-form">
+
+                {{ form.hidden_tag() }}
+
+                <div class="med-form-group">
+
+                    <label>Paciente</label>
+
+                    <select
+                        name="{{ form.recepcao_id.name }}"
+                        class="med-input"
+                    >
+
+                        {% for id, nome in form.recepcao_id.choices %}
+
+                        <option
+                            value="{{ id }}"
+                            {% if id == recepcao_id %}selected{% endif %}
+                        >
+                            {{ nome }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                {% for field in [
+                    form.diagnostico,
+                    form.prescricao,
+                    form.feedback,
+                    form.observacoes_medico
+                ] %}
+
+                <div class="med-form-group">
+
+                    {{ field.label }}
+
+                    {{ field(class="med-textarea") }}
+
+                </div>
+
+                {% endfor %}
+
+                <input
+                    type="hidden"
+                    name="finalizado_medico"
+                    value="True"
+                >
+
+                <div class="med-actions">
+
+                    <button
+                        type="submit"
+                        class="med-btn success"
+                    >
+                        <i class="fa-solid fa-check"></i>
+                        Finalizar Atendimento
+                    </button>
+
+                </div>
+
+            </form>
+
+            <!-- =========================================================
+                CHAMAR PACIENTE
+            ========================================================= -->
+            <form
+                method="POST"
+                action="{{ url_for('chamar_paciente', paciente_id=paciente.id, destino='Medico') }}"
+            >
+
+                <button
+                    type="submit"
+                    class="med-btn warning full-btn"
+                >
+                    <i class="fa-solid fa-volume-high"></i>
+                    Chamar Paciente
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

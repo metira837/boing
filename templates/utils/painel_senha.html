@@ -1,0 +1,278 @@
+{% extends "admin/base_painel.html" %}
+
+{% block title %}Painel Hospitalar{% endblock %}
+
+{% block content %}
+
+<div class="tv-layout">
+
+    <!-- LADO ESQUERDO -->
+    <section class="tv-main">
+
+        <!-- TOPO -->
+        <div class="tv-top">
+
+            <div>
+                <h1>Painel de Atendimento</h1>
+                <p>Clínica Cuidar & Conectar</p>
+            </div>
+
+            <div class="tv-clock" id="clock"></div>
+
+        </div>
+
+        <!-- SENHA ATUAL -->
+        {% if pacientes %}
+
+        <div class="tv-current pulse-animation" id="senhaAtual">
+
+            <div class="tv-senha-box">
+                <span>SENHA</span>
+                <h2>{{ pacientes[0].id }}</h2>
+            </div>
+
+            <div class="tv-paciente-box">
+                <h3>{{ pacientes[0].nome_completo }}</h3>
+                <div class="tv-destino">
+                    {{ pacientes[0].destino }}
+                </div>
+            </div>
+
+        </div>
+
+        {% endif %}
+
+        <!-- ÚLTIMAS CHAMADAS -->
+        <div class="tv-history">
+
+            <h3>Últimas chamadas</h3>
+
+            <div class="tv-history-grid">
+
+                {% for p in pacientes[1:4] %}
+
+                <div class="tv-card">
+
+                    <div class="tv-card-number">
+                        {{ p.id }}
+                    </div>
+
+                    <div>
+                        <strong>{{ p.nome_completo }}</strong>
+                        <span>{{ p.destino }}</span>
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- LADO DIREITO -->
+    <aside class="tv-side">
+        <!-- SLIDES -->
+        <div class="tv-slider">
+
+            <img src="{{ url_for('static', filename='img/ad1.png') }}"
+                 class="slide active">
+
+            <img src="{{ url_for('static', filename='img/ad2.png') }}"
+                 class="slide">
+
+            <img src="{{ url_for('static', filename='img/ad3.png') }}"
+                 class="slide">
+
+        </div>
+
+        <!-- VIDEO OPCIONAL -->
+        <!--
+        <video autoplay muted loop class="tv-video">
+            <source src="{{ url_for('static', filename='videos/anuncio.mp4') }}"
+                    type="video/mp4">
+        </video>
+        -->
+
+    </aside>
+
+</div>
+
+<script>
+
+    /* =========================================================
+       RELÓGIO
+    ========================================================= */
+    
+    function atualizarRelogio(){
+    
+        const agora = new Date();
+    
+        document.getElementById("clock").innerHTML =
+            agora.toLocaleTimeString(
+                "pt-BR",
+                {
+                    hour:"2-digit",
+                    minute:"2-digit",
+                    second:"2-digit"
+                }
+            );
+    }
+    
+    setInterval(atualizarRelogio,1000);
+    
+    atualizarRelogio();
+    
+    /* =========================================================
+       VOZ AUTOMÁTICA
+    ========================================================= */
+    
+    function chamarSenha(){
+    
+        {% if pacientes %}
+    
+        const senhaAtual =
+            "{{ pacientes[0].id }}";
+    
+        const destinoAtual =
+            "{{ pacientes[0].destino }}";
+    
+        const nomePaciente =
+            "{{ pacientes[0].nome_completo }}";
+    
+        /*
+          evita repetir fala infinitamente
+        */
+    
+        const ultimaSenha =
+            localStorage.getItem("ultimaSenhaFalanda");
+    
+        if(ultimaSenha !== senhaAtual){
+    
+            const texto =
+                `Senha ${senhaAtual},
+                ${nomePaciente},
+                dirigir-se para ${destinoAtual}`;
+    
+            const voz =
+                new SpeechSynthesisUtterance(texto);
+    
+            voz.lang = "pt-BR";
+    
+            voz.rate = 0.9;
+    
+            voz.pitch = 1;
+    
+            voz.volume = 1;
+    
+            speechSynthesis.cancel();
+    
+            setTimeout(() => {
+    
+                speechSynthesis.speak(voz);
+    
+            },300);
+    
+            localStorage.setItem(
+                "ultimaSenhaFalanda",
+                senhaAtual
+            );
+        }
+    
+        {% endif %}
+    }
+    
+    window.onload = chamarSenha;
+    
+    /* =========================================================
+       SLIDER
+    ========================================================= */
+    
+    const slides =
+        document.querySelectorAll(".slide");
+    
+    let atual = 0;
+    
+    if(slides.length > 0){
+    
+        setInterval(() => {
+    
+            slides[atual]
+                .classList.remove("active");
+    
+            atual =
+                (atual + 1) % slides.length;
+    
+            slides[atual]
+                .classList.add("active");
+    
+        },6000);
+    }
+    
+    /* =========================================================
+       EFEITO VISUAL NA SENHA
+    ========================================================= */
+    
+    const senhaAtual =
+        document.getElementById("senhaAtual");
+    
+    if(senhaAtual){
+    
+        setInterval(() => {
+    
+            senhaAtual.classList.toggle(
+                "pulse-animation"
+            );
+    
+        },2500);
+    }
+    
+    /* =========================================================
+       AUTO UPDATE
+    ========================================================= */
+    
+    /*
+      Atualiza silenciosamente sem piscar tela
+    */
+    
+    setInterval(() => {
+
+    fetch(window.location.href)
+
+        .then(res => res.text())
+
+        .then(html => {
+
+            const parser = new DOMParser();
+
+            const doc = parser.parseFromString(
+                html,
+                "text/html"
+            );
+
+            const novoLayout =
+                doc.querySelector(".tv-layout");
+
+            const layoutAtual =
+                document.querySelector(".tv-layout");
+
+            if(novoLayout && layoutAtual){
+
+                layoutAtual.innerHTML =
+                    novoLayout.innerHTML;
+
+                iniciarSlider();
+
+                chamarSenha();
+
+                atualizarRelogio();
+            }
+        });
+
+},15000);
+    
+    </script>
+
+{% endblock %}

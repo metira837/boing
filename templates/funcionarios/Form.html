@@ -1,0 +1,661 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ action }} Funcionário{% endblock %}
+
+{% block content %}
+
+<div class="func-form-page">
+
+    <!-- HEADER -->
+    <div class="func-form-header">
+
+        <h1>
+            {{ action }} Funcionário
+        </h1>
+
+        <p>
+            Preencha os dados do colaborador
+        </p>
+
+    </div>
+
+    <!-- CARD -->
+    <div class="func-form-card">
+
+        <form method="POST" class="func-form">
+
+            {{ form.hidden_tag() }}
+
+            <!-- NOME -->
+            <div class="func-group">
+
+                {{ form.nome_completo.label }}
+
+                {{ form.nome_completo(
+                    class="func-input",
+                    placeholder="Digite o nome completo"
+                ) }}
+
+                {% for erro in form.nome_completo.errors %}
+                    <span class="func-error">{{ erro }}</span>
+                {% endfor %}
+
+            </div>
+
+            <!-- USUÁRIO -->
+            <div class="func-group">
+
+                {{ form.usuario.label }}
+
+                {{ form.usuario(
+                    class="func-input",
+                    placeholder="Digite o usuário"
+                ) }}
+
+                {% for erro in form.usuario.errors %}
+                    <span class="func-error">{{ erro }}</span>
+                {% endfor %}
+
+            </div>
+
+            <!-- FUNÇÃO -->
+            <div class="func-group">
+
+                {{ form.funcao.label }}
+
+                {{ form.funcao(class="func-input") }}
+
+                {% for erro in form.funcao.errors %}
+                    <span class="func-error">{{ erro }}</span>
+                {% endfor %}
+
+            </div>
+
+            <!-- SENHA -->
+            <div class="func-group">
+
+                {{ form.senha.label }}
+
+                <div class="func-password-box">
+
+                    {{ form.senha(
+                        class="func-input",
+                        id="senha",
+                        placeholder="Digite a senha"
+                    ) }}
+
+                    <i class="fa-regular fa-eye func-eye"
+                       id="toggleSenha"
+                       onclick="toggleSenha()"></i>
+
+                </div>
+
+                {% for erro in form.senha.errors %}
+                    <span class="func-error">{{ erro }}</span>
+                {% endfor %}
+
+            </div>
+
+            <!-- CONFIRMAR SENHA -->
+            <div class="func-group">
+
+                {{ form.confirmar_senha.label }}
+
+                <div class="func-password-box">
+
+                    {{ form.confirmar_senha(
+                        class="func-input",
+                        id="confirmarSenha",
+                        placeholder="Confirme a senha"
+                    ) }}
+
+                    <i class="fa-regular fa-eye func-eye"
+                       id="toggleConfirmarSenha"
+                       onclick="toggleConfirmarSenha()"></i>
+
+                </div>
+
+                {% for erro in form.confirmar_senha.errors %}
+                    <span class="func-error">{{ erro }}</span>
+                {% endfor %}
+
+            </div>
+
+            <!-- SEXO -->
+            <div class="func-group">
+
+                {{ form.sexo.label }}
+
+                {{ form.sexo(class="func-input") }}
+
+                {% for erro in form.sexo.errors %}
+                    <span class="func-error">{{ erro }}</span>
+                {% endfor %}
+
+            </div>
+
+            <!-- EMAIL -->
+            <div class="func-group">
+
+                {{ form.email.label }}
+
+                {{ form.email(
+                    class="func-input",
+                    placeholder="Digite o email"
+                ) }}
+
+                {% for erro in form.email.errors %}
+                    <span class="func-error">{{ erro }}</span>
+                {% endfor %}
+
+            </div>
+
+            <!-- TELEFONE -->
+            <div class="func-group">
+
+                {{ form.telefone.label }}
+
+                {{ form.telefone(
+                    class="func-input",
+                    placeholder="Digite o telefone"
+                ) }}
+
+                {% for erro in form.telefone.errors %}
+                    <span class="func-error">{{ erro }}</span>
+                {% endfor %}
+
+            </div>
+
+            <!-- ASSINATURA -->
+            <div class="func-group">
+
+                <label class="func-label">
+                    Assinatura Digital
+                </label>
+
+                <div class="assinatura-container">
+
+                    <!-- QR CODE -->
+                    <div class="assinatura-box">
+
+                        <div class="assinatura-top">
+
+                            <div class="assinatura-icon">
+
+                                <i class="fa-solid fa-tablet-screen-button"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Assinatura via Tablet
+                                </h3>
+
+                                <p>
+                                    Escaneie o QR Code no tablet
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="assinatura-qrcode-box">
+
+                            <img id="qrCodeAssinatura"
+                                 src="{{ qr_code }}"
+                                 class="assinatura-qrcode">
+
+                        </div>
+
+                        <div class="assinatura-status">
+
+                            <span id="statusAssinatura">
+
+                                Aguardando assinatura...
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- PREVIEW -->
+                    <div class="assinatura-preview-box">
+
+                        <div class="assinatura-preview-header">
+
+                            <i class="fa-solid fa-signature"></i>
+
+                            <span>
+                                Pré-visualização
+                            </span>
+
+                        </div>
+
+                        <div id="assinatura-preview"
+                             class="assinatura-preview">
+
+                            <div class="assinatura-placeholder">
+
+                                <i class="fa-regular fa-file-signature"></i>
+
+                                <p>
+                                    Nenhuma assinatura recebida
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- HIDDEN -->
+                <input type="hidden"
+                       name="assinatura"
+                       id="assinatura">
+
+            </div>
+
+            <!-- BOTÕES -->
+            <div class="func-buttons">
+
+                <button type="submit"
+                        class="func-btn-submit">
+
+                    {{ action }}
+
+                </button>
+
+                <a href="{{ url_for('funcionarios_list') }}"
+                   class="func-btn-cancel">
+
+                    Cancelar
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- ========================================= -->
+<!-- ESTILO -->
+<!-- ========================================= -->
+
+<style>
+
+.assinatura-container{
+
+    display:flex;
+    flex-direction:column;
+
+    gap:16px;
+
+    margin-top:6px;
+}
+
+/* CARD */
+
+.assinatura-box{
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid var(--border);
+
+    border-radius:20px;
+
+    padding:18px;
+
+    backdrop-filter:blur(10px);
+}
+
+/* TOP */
+
+.assinatura-top{
+
+    display:flex;
+    align-items:center;
+
+    gap:14px;
+
+    margin-bottom:18px;
+}
+
+.assinatura-icon{
+
+    width:52px;
+    height:52px;
+
+    border-radius:16px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        #8b5cf6
+    );
+
+    color:#fff;
+
+    font-size:20px;
+
+    flex-shrink:0;
+}
+
+.assinatura-top h3{
+
+    font-size:15px;
+
+    margin-bottom:4px;
+
+    color:var(--text);
+}
+
+.assinatura-top p{
+
+    font-size:12px;
+
+    color:var(--text-soft);
+}
+
+/* QR */
+
+.assinatura-qrcode-box{
+
+    width:100%;
+
+    display:flex;
+    justify-content:center;
+
+    padding:18px;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.03);
+
+    border:1px dashed rgba(255,255,255,.08);
+}
+
+.assinatura-qrcode{
+
+    width:220px;
+    height:220px;
+
+    border-radius:16px;
+
+    background:#fff;
+
+    padding:10px;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.20);
+}
+
+/* STATUS */
+
+.assinatura-status{
+
+    margin-top:18px;
+
+    display:flex;
+    justify-content:center;
+}
+
+.assinatura-status span{
+
+    padding:10px 14px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:var(--text-soft);
+
+    font-size:12px;
+
+    font-weight:600;
+}
+
+/* PREVIEW */
+
+.assinatura-preview-box{
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid var(--border);
+
+    border-radius:20px;
+
+    padding:18px;
+}
+
+.assinatura-preview-header{
+
+    display:flex;
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:16px;
+
+    color:var(--text-soft);
+
+    font-size:13px;
+
+    font-weight:600;
+}
+
+.assinatura-preview{
+
+    min-height:220px;
+
+    border-radius:18px;
+
+    border:2px dashed rgba(255,255,255,.08);
+
+    background:rgba(255,255,255,.02);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    overflow:hidden;
+}
+
+.assinatura-preview img{
+
+    width:100%;
+    height:100%;
+
+    object-fit:contain;
+
+    padding:10px;
+}
+
+.assinatura-placeholder{
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:12px;
+
+    color:var(--text-soft);
+}
+
+.assinatura-placeholder i{
+
+    font-size:40px;
+
+    opacity:.5;
+}
+
+.assinatura-placeholder p{
+
+    font-size:13px;
+}
+
+/* BOTÕES */
+
+.func-buttons{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:10px;
+}
+
+.func-btn-submit,
+.func-btn-cancel{
+
+    flex:1;
+}
+
+/* RESPONSIVO */
+
+@media(max-width:700px){
+
+    .func-form-card{
+
+        max-width:100%;
+    }
+
+    .assinatura-qrcode{
+
+        width:180px;
+        height:180px;
+    }
+
+    .func-buttons{
+
+        flex-direction:column;
+    }
+}
+
+</style>
+
+<!-- ========================================= -->
+<!-- SCRIPT SENHAS -->
+<!-- ========================================= -->
+
+<script>
+
+function toggleSenha() {
+
+    const input = document.getElementById("senha");
+    const icon = document.getElementById("toggleSenha");
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+
+    } else {
+
+        input.type = "password";
+
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
+
+function toggleConfirmarSenha() {
+
+    const input = document.getElementById("confirmarSenha");
+    const icon = document.getElementById("toggleConfirmarSenha");
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+
+    } else {
+
+        input.type = "password";
+
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
+
+</script>
+
+<!-- ========================================= -->
+<!-- RECEBER ASSINATURA -->
+<!-- ========================================= -->
+
+<script>
+
+window.addEventListener("message", function(event) {
+
+    if (event.data.tipo === "assinatura") {
+
+        document.getElementById("assinatura").value =
+            event.data.imagem;
+
+        document.getElementById("assinatura-preview").innerHTML =
+            `<img src="${event.data.imagem}">`;
+
+        document.getElementById("statusAssinatura").innerHTML =
+            "Assinatura recebida com sucesso";
+
+        document.getElementById("statusAssinatura").style.color =
+            "#22c55e";
+    }
+});
+
+</script>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+<script>
+
+const socket = io();
+
+socket.on(
+    "assinatura_recebida",
+    function(data){
+
+        if(data.token !== "{{ token }}")
+            return;
+
+        document
+            .getElementById("assinatura")
+            .value = data.imagem;
+
+        document
+            .getElementById("assinatura-preview")
+            .innerHTML = `
+                <img src="${data.imagem}">
+            `;
+
+        document
+            .getElementById("statusAssinatura")
+            .innerHTML =
+                "Assinatura recebida com sucesso";
+
+        document
+            .getElementById("statusAssinatura")
+            .style.color =
+                "#4ade80";
+
+    }
+);
+
+</script>
+{% endblock %}

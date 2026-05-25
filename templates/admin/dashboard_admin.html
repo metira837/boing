@@ -1,0 +1,62 @@
+{% extends "admin/base.html" %}
+{% block title %}Administração{% endblock %}
+
+{% block content %}
+
+<div class="dash-header">
+    <h1>Painel Administrativo</h1>
+    <p>Visão geral do sistema</p>
+</div>
+
+<div class="dash-cards">
+
+    <div class="dash-card" onclick="window.location.href='{{ url_for('funcionarios_list') }}'">
+        <i class="fa-solid fa-users"></i>
+        <h3>Funcionários</h3>
+        <p>{{ dados|length }} cadastrados</p>
+    </div>
+
+    <div class="dash-card" onclick="window.location.href='{{ url_for('recepcao_list') }}'">
+        <i class="fa-solid fa-desktop"></i>
+        <h3>Recepção</h3>
+        <p>Atendimentos em andamento</p>
+    </div>
+
+    <div class="dash-card" onclick="window.location.href='{{ url_for('triagem_dashboard') }}'">
+        <i class="fa-solid fa-stethoscope"></i>
+        <h3>Triagem</h3>
+        <p>Registros recentes</p>
+    </div>
+
+</div>
+
+<div class="dash-chart">
+    <canvas id="grafico1"></canvas>
+</div>
+
+<script>
+    const ctx = document.getElementById('grafico1');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Funcionários', 'Recepção', 'Triagem'],
+            datasets: [{
+                label: 'Quantidade',
+                data: [
+                    {{ dados|length }},
+                    5,
+                    8
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+</script>
+
+{% endblock %}

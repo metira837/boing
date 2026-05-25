@@ -1,0 +1,172 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ action }} Triagem{% endblock %}
+
+{% block content %}
+
+<div class="tri-form-page">
+
+    <div class="tri-form-header">
+        <h1>{{ action }} Triagem</h1>
+        <p>Avaliação clínica do paciente</p>
+    </div>
+
+    <div class="tri-form-card">
+
+        <form method="POST" class="tri-form">
+
+            {{ form.hidden_tag() }}
+
+            <!-- PACIENTE -->
+            <div class="tri-group">
+                <label>Paciente</label>
+
+                <select name="{{ form.recepcao_id.name }}"
+                        class="tri-input">
+
+                    {% for id, nome in form.recepcao_id.choices %}
+
+                        <option value="{{ id }}"
+                        {% if id == recepcao_id %}selected{% endif %}>
+                            {{ nome }}
+                        </option>
+
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- OCUPAÇÃO -->
+            <div class="tri-group">
+                {{ form.ocupacao.label }}
+                {{ form.ocupacao(class="tri-input") }}
+            </div>
+
+            <!-- LINHAS -->
+            <div class="tri-grid">
+
+                <div class="tri-group">
+                    {{ form.temperatura.label }}
+                    {{ form.temperatura(class="tri-input") }}
+                </div>
+
+                <div class="tri-group">
+                    {{ form.freq_cardiaca.label }}
+                    {{ form.freq_cardiaca(class="tri-input") }}
+                </div>
+
+                <div class="tri-group">
+                    {{ form.freq_respiratoria.label }}
+                    {{ form.freq_respiratoria(class="tri-input") }}
+                </div>
+
+                <div class="tri-group">
+                    {{ form.peso.label }}
+                    {{ form.peso(class="tri-input") }}
+                </div>
+
+                <div class="tri-group">
+                    {{ form.altura.label }}
+                    {{ form.altura(class="tri-input") }}
+                </div>
+
+                <div class="tri-group">
+                    {{ form.pressao_arterial.label }}
+                    {{ form.pressao_arterial(class="tri-input") }}
+                </div>
+
+                <div class="tri-group">
+                    {{ form.saturacao.label }}
+                    {{ form.saturacao(class="tri-input") }}
+                </div>
+
+                <div class="tri-group">
+                    {{ form.alergia.label }}
+                    {{ form.alergia(class="tri-input") }}
+                </div>
+
+            </div>
+
+            <!-- URGÊNCIA -->
+            <div class="tri-group">
+                {{ form.urgencia_triagem.label }}
+                {{ form.urgencia_triagem(class="tri-input") }}
+            </div>
+
+            <!-- TEXTAREAS -->
+            <div class="tri-group">
+                {{ form.queixa_principal.label }}
+                {{ form.queixa_principal(class="tri-textarea") }}
+            </div>
+
+            <div class="tri-group">
+                {{ form.doencas_pre_existentes.label }}
+                {{ form.doencas_pre_existentes(class="tri-textarea") }}
+            </div>
+
+            <!-- CHECKBOX -->
+            <div class="tri-checks">
+
+                <label class="tri-check">
+                    {{ form.tabagista() }}
+                    <span>{{ form.tabagista.label.text }}</span>
+                </label>
+
+                <label class="tri-check">
+                    {{ form.bebida_alcoolica() }}
+                    <span>{{ form.bebida_alcoolica.label.text }}</span>
+                </label>
+
+            </div>
+
+            <!-- CIRURGIA -->
+            <div class="tri-group">
+                {{ form.cirugia_realizada.label }}
+                {{ form.cirugia_realizada(class="tri-textarea") }}
+            </div>
+
+            <!-- FINAL -->
+            <div class="tri-grid">
+
+                <div class="tri-group">
+                    {{ form.escala_de_dor.label }}
+                    {{ form.escala_de_dor(class="tri-input") }}
+                </div>
+
+                <div class="tri-group">
+                    {{ form.toma_medicacao.label }}
+                    {{ form.toma_medicacao(class="tri-textarea") }}
+                </div>
+
+            </div>
+
+            <!-- BOTÃO -->
+            <button type="submit" class="tri-submit">
+                {{ action }}
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- CHAMAR PACIENTE -->
+    {% if paciente %}
+
+    <div class="tri-call-box">
+
+        <form method="post"
+              action="{{ url_for('chamar_paciente', paciente_id=paciente.id, destino='Triagem') }}">
+
+            {{ form.hidden_tag() }}
+
+            <button type="submit" class="tri-call-btn">
+                Chamar Paciente
+            </button>
+
+        </form>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

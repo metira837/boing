@@ -1,0 +1,172 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Guia de Funções{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/guia.css') }}">
+
+<div class="guia-page">
+
+    <!-- TOPO -->
+    <div class="guia-top">
+
+        <div>
+            <h1 class="guia-title">
+                Guia de Funções
+            </h1>
+
+            <p class="guia-sub">
+                Entenda o papel de cada setor dentro da clínica.
+            </p>
+        </div>
+
+        <div class="guia-badge">
+            Clínica Cuidar & Conectar
+        </div>
+
+    </div>
+
+    <!-- GRID -->
+    <div class="guia-grid">
+
+        <!-- RECEPÇÃO -->
+        <div class="guia-card recepcao">
+
+            <div class="guia-icon">
+                <i class="fa-solid fa-desktop"></i>
+            </div>
+
+            <h2>Recepção</h2>
+
+            <p>
+                Responsável pelo primeiro contato com o paciente.
+            </p>
+
+            <ul>
+                <li>Registrar chegada dos pacientes</li>
+                <li>Atualizar dados cadastrais</li>
+                <li>Orientar pacientes</li>
+                <li>Encaminhar para triagem</li>
+            </ul>
+
+        </div>
+
+        <!-- TRIAGEM -->
+        <div class="guia-card triagem">
+
+            <div class="guia-icon">
+                <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+
+            <h2>Triagem</h2>
+
+            <p>
+                Avaliação inicial e definição de prioridade clínica.
+            </p>
+
+            <ul>
+                <li>Coletar sinais vitais</li>
+                <li>Identificar urgências</li>
+                <li>Registrar observações</li>
+                <li>Encaminhar ao médico</li>
+            </ul>
+
+        </div>
+
+        <!-- MÉDICO -->
+        <div class="guia-card medico">
+
+            <div class="guia-icon">
+                <i class="fa-solid fa-user-doctor"></i>
+            </div>
+
+            <h2>Atendimento Médico</h2>
+
+            <p>
+                Diagnóstico e condução clínica do paciente.
+            </p>
+
+            <ul>
+                <li>Avaliar sintomas</li>
+                <li>Realizar exames clínicos</li>
+                <li>Registrar diagnóstico</li>
+                <li>Prescrever tratamentos</li>
+            </ul>
+
+        </div>
+
+        <!-- ADMIN -->
+        <div class="guia-card admin">
+
+            <div class="guia-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <h2>Administração</h2>
+
+            <p>
+                Gerenciamento do sistema e supervisão geral.
+            </p>
+
+            <ul>
+                <li>Gerenciar funcionários</li>
+                <li>Controlar permissões</li>
+                <li>Acompanhar relatórios</li>
+                <li>Supervisionar operações</li>
+            </ul>
+
+        </div>
+
+        <!-- VENDAS -->
+<div class="guia-card vendas">
+
+    <div class="guia-icon">
+        <i class="fa-solid fa-cart-shopping"></i>
+    </div>
+
+    <h2>Vendas</h2>
+
+    <p>
+        Responsável pelo atendimento comercial e suporte aos pacientes.
+    </p>
+
+    <ul>
+        <li>Apresentar serviços da clínica</li>
+        <li>Realizar orçamentos</li>
+        <li>Organizar pagamentos e convênios</li>
+        <li>Auxiliar no agendamento de procedimentos</li>
+    </ul>
+
+</div>
+
+<!-- VACINAÇÃO -->
+<div class="guia-card vacinacao">
+
+    <div class="guia-icon">
+        <i class="fa-solid fa-syringe"></i>
+    </div>
+
+    <h2>Vacinação</h2>
+
+    <p>
+        Aplicação de vacinas e acompanhamento da imunização dos pacientes.
+    </p>
+
+    <ul>
+        <li>Aplicar vacinas com segurança</li>
+        <li>Registrar doses no sistema</li>
+        <li>Orientar sobre reações e cuidados</li>
+        <li>Controlar estoque de vacinas</li>
+    </ul>
+
+</div>
+
+    </div>
+
+    
+
+</div>
+
+{% endblock %}

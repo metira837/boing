@@ -1,0 +1,222 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Dashboard Médico{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard_medico.css') }}">
+
+<div class="med-dashboard">
+
+    <!-- ================= HEADER ================= -->
+    <div class="med-header">
+        <div>
+            <h1>Dashboard Médico</h1>
+            <p>Painel de acompanhamento médico e gerenciamento de atendimentos.</p>
+        </div>
+    </div>
+
+    <!-- ================= CARDS ================= -->
+    <div class="med-cards">
+
+        <div class="med-card">
+            <div class="med-card-icon waiting">
+                <i class="fa-solid fa-user-clock"></i>
+            </div>
+
+            <div class="med-card-info">
+                <h3>Pacientes em Espera</h3>
+                <span>
+                    {{ pacientes_aguardando|length if pacientes_aguardando else 0 }}
+                </span>
+            </div>
+        </div>
+
+        <div class="med-card">
+            <div class="med-card-icon done">
+                <i class="fa-solid fa-check"></i>
+            </div>
+
+            <div class="med-card-info">
+                <h3>Atendimentos Hoje</h3>
+                <span>
+                    {{ atendimentos_hoje if atendimentos_hoje else 0 }}
+                </span>
+            </div>
+        </div>
+
+        <div class="med-card">
+            <div class="med-card-icon next">
+                <i class="fa-solid fa-stethoscope"></i>
+            </div>
+
+            <div class="med-card-info">
+                <h3>Próximo Paciente</h3>
+
+                <span>
+                    {% if pacientes_aguardando %}
+                        {{ pacientes_aguardando[0].nome_completo }}
+                    {% else %}
+                        Nenhum paciente
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ================= FILA ================= -->
+    <div class="med-box">
+
+        <div class="med-box-header">
+            <h2>Fila de Pacientes</h2>
+        </div>
+
+        {% if pacientes_aguardando %}
+
+        <div class="med-table-wrapper">
+
+            <table class="med-table">
+
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Nascimento</th>
+                        <th>Urgência</th>
+                        <th>Queixa</th>
+                        <th>Ocupação</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for p in pacientes_aguardando %}
+
+                    <tr>
+
+                        <td class="med-name">
+                            {{ p.nome_completo }}
+                        </td>
+
+                        <td>
+                            {{ p.data_nascimento.strftime('%d/%m/%Y') if p.data_nascimento else '-' }}
+                        </td>
+
+                        <td>
+
+                            {% set urgencia = p.triagem.urgencia_triagem.lower() if p.triagem and p.triagem.urgencia_triagem else 'baixa' %}
+
+                            <span class="med-urgency {{ urgencia }}">
+                                {{ p.triagem.urgencia_triagem if p.triagem else '-' }}
+                            </span>
+
+                        </td>
+
+                        <td class="med-text">
+                            {{ p.triagem.queixa_principal if p.triagem else '-' }}
+                        </td>
+
+                        <td>
+                            {{ p.triagem.ocupacao if p.triagem else '-' }}
+                        </td>
+
+                        <td>
+
+                            <a
+                                class="med-btn"
+                                href="{{ url_for('atender_paciente', paciente_id=p.id) }}"
+                            >
+                                <i class="fa-solid fa-user-doctor"></i>
+                                Atender
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="med-empty">
+            Nenhum paciente aguardando atendimento.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <!-- ================= ÚLTIMOS ================= -->
+    <div class="med-box">
+
+        <div class="med-box-header">
+            <h2>Últimos Atendimentos</h2>
+        </div>
+
+        {% if ultimos_atendimentos %}
+
+        <div class="med-table-wrapper">
+
+            <table class="med-table">
+
+                <thead>
+                    <tr>
+                        <th>Paciente</th>
+                        <th>Diagnóstico</th>
+                        <th>Prescrição</th>
+                        <th>Finalizado em</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for a in ultimos_atendimentos %}
+
+                    <tr>
+
+                        <td class="med-name">
+                            {{ a.recepcao.nome_completo if a.recepcao else '-' }}
+                        </td>
+
+                        <td class="med-text">
+                            {{ a.diagnostico or '-' }}
+                        </td>
+
+                        <td class="med-text">
+                            {{ a.prescricao or '-' }}
+                        </td>
+
+                        <td>
+                            {{ a.horario_de_finalizacao.strftime('%d/%m/%Y %H:%M') if a.horario_de_finalizacao else '-' }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="med-empty">
+            Nenhum atendimento registrado recentemente.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

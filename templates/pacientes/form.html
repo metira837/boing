@@ -1,0 +1,447 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+    {% if editar %}
+        Editar Paciente
+    {% else %}
+        Novo Paciente
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="patient-form-page">
+
+    <!-- HEADER -->
+
+    <div class="patient-form-header">
+
+        <div>
+
+            <span class="patient-form-badge">
+                <i class="fa-solid fa-heart-pulse"></i>
+                Gestão Hospitalar
+            </span>
+
+            <h1>
+                {% if editar %}
+                    Editar Paciente
+                {% else %}
+                    Novo Paciente
+                {% endif %}
+            </h1>
+
+            <p>
+                Preencha as informações do paciente com atenção.
+            </p>
+
+        </div>
+
+        <a href="{{ url_for('dashboard_pacientes') }}"
+           class="patient-back-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+            Voltar
+
+        </a>
+
+    </div>
+
+    <!-- FORM -->
+
+    <form method="POST"
+          enctype="multipart/form-data"
+          class="patient-form-card">
+
+        {{ form.hidden_tag() }}
+
+        <!-- FOTO -->
+
+        <div class="patient-photo-section">
+
+            <div class="patient-photo-preview"
+                 id="previewFoto">
+
+                <i class="fa-solid fa-camera"></i>
+
+            </div>
+
+            <div class="patient-photo-content">
+
+                <h3>
+                    Foto do Paciente
+                </h3>
+
+                <p>
+                    Adicione uma foto para identificação visual.
+                </p>
+
+                {{ form.foto(
+                    class="patient-file-input",
+                    onchange="previewImagem(event)"
+                ) }}
+
+            </div>
+
+        </div>
+
+        <!-- GRID -->
+
+        <div class="patient-form-grid">
+
+            <!-- NOME -->
+
+            <div class="patient-group full">
+
+                {{ form.nome_completo.label(class="patient-label") }}
+
+                {{ form.nome_completo(
+                    class="patient-input",
+                    placeholder="Digite o nome completo"
+                ) }}
+
+                {% for erro in form.nome_completo.errors %}
+                    <span class="patient-error">
+                        {{ erro }}
+                    </span>
+                {% endfor %}
+
+            </div>
+
+            <!-- NASCIMENTO -->
+
+            <div class="patient-group">
+
+                {{ form.data_nascimento.label(class="patient-label") }}
+
+                {{ form.data_nascimento(
+                    class="patient-input"
+                ) }}
+
+            </div>
+
+            <!-- SEXO -->
+
+            <div class="patient-group">
+
+                {{ form.sexo.label(class="patient-label") }}
+
+                {{ form.sexo(
+                    class="patient-select"
+                ) }}
+
+            </div>
+
+            <!-- CONTATO -->
+
+            <div class="patient-group">
+
+                {{ form.contato.label(class="patient-label") }}
+
+                {{ form.contato(
+                    class="patient-input",
+                    placeholder="Digite o telefone"
+                ) }}
+
+            </div>
+
+            <!-- DOCUMENTO -->
+
+            <div class="patient-group">
+
+                {{ form.documento.label(class="patient-label") }}
+
+                {{ form.documento(
+                    class="patient-input",
+                    placeholder="Digite CPF ou documento"
+                ) }}
+
+            </div>
+
+            <!-- EMAIL -->
+
+            <div class="patient-group">
+
+                {{ form.email.label(class="patient-label") }}
+
+                {{ form.email(
+                    class="patient-input",
+                    placeholder="Digite o email"
+                ) }}
+
+            </div>
+
+            <!-- PLANO -->
+
+            <div class="patient-group">
+
+                {{ form.plano.label(class="patient-label") }}
+
+                {{ form.plano(
+                    class="patient-input",
+                    placeholder="Digite o plano"
+                ) }}
+
+            </div>
+
+            <!-- USUÁRIO -->
+
+            <div class="patient-group">
+
+                {{ form.usuario.label(class="patient-label") }}
+
+                {{ form.usuario(
+                    class="patient-input",
+                    placeholder="Digite o usuário"
+                ) }}
+
+            </div>
+
+            <!-- RESPONSÁVEL -->
+
+            <div class="patient-group">
+
+                {{ form.responsavel.label(class="patient-label") }}
+
+                {{ form.responsavel(
+                    class="patient-input",
+                    placeholder="Digite o responsável"
+                ) }}
+
+            </div>
+
+            <!-- SENHAS -->
+
+            {% if not editar %}
+
+            <div class="patient-group">
+
+                {{ form.senha.label(class="patient-label") }}
+
+                {{ form.senha(
+                    class="patient-input",
+                    placeholder="Digite a senha"
+                ) }}
+
+            </div>
+
+            <div class="patient-group">
+
+                {{ form.confirmar_senha.label(class="patient-label") }}
+
+                {{ form.confirmar_senha(
+                    class="patient-input",
+                    placeholder="Confirme a senha"
+                ) }}
+
+            </div>
+
+            {% endif %}
+
+            <!-- OBS -->
+
+            <div class="patient-group full">
+
+                {{ form.observacoes_cadastro.label(class="patient-label") }}
+
+                {{ form.observacoes_cadastro(
+                    class="patient-textarea",
+                    placeholder="Digite observações importantes"
+                ) }}
+
+            </div>
+
+            <!-- ASSINATURA -->
+
+
+<div class="patient-group full">
+
+    <label class="patient-label">
+        Assinatura Digital
+    </label>
+
+    <div class="patient-signature-container">
+
+        <!-- QR CODE -->
+
+        <div class="patient-signature-box">
+
+            <div class="patient-signature-top">
+
+                <div class="patient-signature-icon">
+
+                    <i class="fa-solid fa-tablet-screen-button"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Assinatura via Tablet
+                    </h3>
+
+                    <p>
+                        Escaneie o QR Code para assinar
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="patient-qrcode-box">
+
+                <img
+                    src="{{ qr_code }}"
+                    class="patient-qrcode"
+                    id="qrCodeAssinatura"
+                >
+
+            </div>
+
+            <div class="patient-signature-status">
+
+                <span id="statusAssinatura">
+
+                    Aguardando assinatura...
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- PREVIEW -->
+
+        <div class="patient-preview-box">
+
+            <div class="patient-preview-header">
+
+                <i class="fa-solid fa-signature"></i>
+
+                <span>
+                    Pré-visualização
+                </span>
+
+            </div>
+
+            <div id="assinatura-preview"
+                 class="patient-signature-preview">
+
+                <div class="patient-signature-placeholder">
+
+                    <i class="fa-regular fa-file-signature"></i>
+
+                    <p>
+                        Nenhuma assinatura recebida
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- HIDDEN -->
+
+    <input
+        type="hidden"
+        name="assinatura"
+        id="assinatura"
+    >
+
+</div>
+
+        </div>
+
+        <!-- ACTIONS -->
+
+        <div class="patient-form-actions">
+
+            <a href="{{ url_for('dashboard_pacientes') }}"
+               class="patient-cancel-btn">
+
+                Cancelar
+
+            </a>
+
+            {{ form.submit(
+                class="patient-save-btn"
+            ) }}
+
+        </div>
+
+    </form>
+
+</div>
+
+<!-- SCRIPT -->
+
+<script>
+
+function previewImagem(event){
+
+    const input = event.target;
+
+    const preview =
+        document.getElementById("previewFoto");
+
+    if(input.files && input.files[0]){
+
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+
+            preview.innerHTML = `
+                <img src="${e.target.result}">
+            `;
+
+        };
+
+        reader.readAsDataURL(input.files[0]);
+
+    }
+
+}
+
+</script>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+<script>
+
+const socket = io();
+
+socket.on(
+    "assinatura_recebida",
+    function(data){
+
+        if(data.token !== "{{ token }}")
+            return;
+
+        document
+            .getElementById("assinatura")
+            .value = data.imagem;
+
+        document
+            .getElementById("assinatura-preview")
+            .innerHTML = `
+                <img src="${data.imagem}">
+            `;
+
+        document
+            .getElementById("statusAssinatura")
+            .innerHTML =
+                "Assinatura recebida com sucesso";
+
+        document
+            .getElementById("statusAssinatura")
+            .style.color =
+                "#4ade80";
+
+    }
+);
+
+</script>
+
+{% endblock %}

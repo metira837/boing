@@ -1,0 +1,508 @@
+/* ================= ROOT ================= */
+:root {
+    --bg: linear-gradient(180deg, #3a2278, #261646, #150d29);
+  
+    --container: rgba(255, 255, 255, 0.07);
+    --glass: rgba(255, 255, 255, 0.08);
+  
+    --text: #ffffff;
+    --text-soft: rgba(255,255,255,.70);
+  
+    --border: rgba(255,255,255,.12);
+    --input-border: rgba(255,255,255,.14);
+  
+    --primary: #6b8cff;
+    --primary-hover: #7a9dff;
+  
+    --shadow: 0 6px 24px rgba(0,0,0,.22);
+  }
+  
+  /* ================= LIGHT MODE ================= */
+  body.dark {
+    --bg: #f4f6fb;
+  
+    --container: rgba(255,255,255,.92);
+    --glass: #ffffff;
+  
+    --text: #1c1c1f;
+    --text-soft: #666;
+  
+    --border: rgba(0,0,0,.08);
+    --input-border: rgba(0,0,0,.10);
+  
+    --primary: #5f7dff;
+    --primary-hover: #4d6eff;
+  
+    --shadow: 0 6px 18px rgba(0,0,0,.08);
+  }
+  
+  /* ================= RESET ================= */
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  
+    transition:
+    background .3s ease,
+    color .3s ease,
+    border .3s ease;
+  }
+  
+  /* ================= BODY ================= */
+  body{
+    font-family:'Poppins',sans-serif;
+  
+    background:var(--bg);
+    background-size:cover;
+  
+    min-height:100vh;
+  
+    color:var(--text);
+  
+    padding:10px;
+  }
+  
+  /* ================= CONTAINER ================= */
+  .container{
+    width:100%;
+    height:calc(100vh - 20px);
+  
+    background:var(--container);
+    backdrop-filter:blur(14px);
+  
+    border:1px solid var(--border);
+    border-radius:22px;
+  
+    box-shadow:var(--shadow);
+  
+    padding:18px 24px;
+  
+    overflow:hidden;
+  }
+  
+  /* ================= TOPO ================= */
+  .topo{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  
+    margin-bottom:18px;
+  }
+  
+  /* ================= LOGO ================= */
+  .logo{
+    font-size:24px;
+    font-weight:700;
+  }
+  
+  .logo span{
+    color:var(--primary);
+  }
+  
+  /* ================= LINKS ================= */
+  .top-links{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  
+  .divisor{
+    width:1px;
+    height:18px;
+    background:var(--border);
+  }
+  
+  /* ================= LAYOUT ================= */
+  .conteudo{
+    display:grid;
+    grid-template-columns: 1fr 390px;
+    gap:24px;
+    align-items:center;
+  
+    height:calc(100% - 55px);
+  }
+  
+  /* ================= HERO ================= */
+  .hero-text h1{
+    font-size:42px;
+    line-height:1.05;
+    font-weight:800;
+  
+    margin-bottom:14px;
+  }
+  
+  .hero-text span{
+    color:var(--primary);
+  }
+  
+  .hero-text p{
+    font-size:15px;
+    line-height:1.5;
+  
+    color:var(--text-soft);
+  
+    max-width:420px;
+  }
+  
+  /* ================= BENEFICIOS ================= */
+  .beneficios{
+    margin-top:28px;
+  
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+  
+  .item{
+    background:var(--glass);
+  
+    border:1px solid var(--border);
+  
+    border-radius:16px;
+  
+    padding:14px;
+  }
+  
+  .item i{
+    font-size:18px;
+    color:var(--primary);
+  
+    margin-bottom:8px;
+  }
+  
+  .item h3{
+    font-size:14px;
+    margin-bottom:6px;
+    line-height:1.3;
+  }
+  
+  .item p{
+    font-size:11px;
+    line-height:1.4;
+  
+    color:var(--text-soft);
+  }
+  
+  /* ================= LOGIN ================= */
+  .login-box{
+    background:var(--glass);
+  
+    border:1px solid var(--border);
+  
+    border-radius:24px;
+  
+    padding:24px;
+  
+    backdrop-filter:blur(10px);
+  
+    box-shadow:var(--shadow);
+  }
+  
+  /* ================= TITULOS ================= */
+  .login-box h2{
+    font-size:28px;
+    margin-bottom:6px;
+  }
+  
+  .sub{
+    font-size:13px;
+    line-height:1.5;
+  
+    color:var(--text-soft);
+  
+    margin-bottom:20px;
+  }
+  
+  /* ================= LABEL ================= */
+  label{
+    display:block;
+  
+    font-size:13px;
+    font-weight:600;
+  
+    margin-bottom:8px;
+    margin-top:12px;
+  }
+  
+  /* ================= INPUT ================= */
+  .input-box{
+    width:100%;
+    height:46px;
+  
+    border:1px solid var(--input-border);
+    border-radius:12px;
+  
+    display:flex;
+    align-items:center;
+  
+    padding:0 14px;
+  
+    background:rgba(255,255,255,.03);
+  
+    margin-bottom:10px;
+  }
+  
+  .input-box i{
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  
+  .input-box input{
+    flex:1;
+  
+    border:none;
+    outline:none;
+  
+    background:transparent;
+  
+    padding-left:10px;
+  
+    font-size:13px;
+    color:var(--text);
+  }
+  
+  .input-box input::placeholder{
+    color:var(--text-soft);
+  }
+  
+  #toggleSenha{
+    cursor:pointer;
+  }
+  
+  /* ================= ESQUECEU ================= */
+  .esqueceu{
+    text-align:right;
+    margin-bottom:18px;
+  }
+  
+  .esqueceu a{
+    color:var(--primary);
+    text-decoration:none;
+  
+    font-size:11px;
+  }
+  
+  /* ================= BOTAO ================= */
+  button{
+    width:100%;
+    height:46px;
+  
+    border:none;
+    border-radius:12px;
+  
+    background:var(--primary);
+  
+    color:#fff;
+  
+    font-size:14px;
+    font-weight:700;
+  
+    cursor:pointer;
+  }
+  
+  button:hover{
+    background:var(--primary-hover);
+  }
+  
+  /* ================= DIVISOR ================= */
+  .ou{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  
+    margin:18px 0;
+  
+    color:var(--text-soft);
+  
+    font-size:11px;
+  }
+  
+  .ou span{
+    flex:1;
+    height:1px;
+    background:var(--border);
+  }
+  
+  /* ================= CADASTRO ================= */
+  .cadastro{
+    text-align:center;
+  
+    font-size:11px;
+  
+    color:var(--text-soft);
+  }
+  
+  .cadastro a{
+    color:var(--primary);
+  
+    text-decoration:none;
+    font-weight:600;
+  }
+  
+  /* ================= TOGGLE ================= */
+  .modo{
+    position:relative;
+    cursor:pointer;
+  }
+  
+  .toggle{
+    width:54px;
+    height:28px;
+  
+    border-radius:50px;
+  
+    position:relative;
+  
+    background:rgba(255,255,255,.08);
+  
+    border:1px solid var(--border);
+  
+    display:flex;
+    align-items:center;
+  
+    padding:3px;
+  }
+  
+  .icons{
+    position:absolute;
+  
+    width:100%;
+  
+    display:flex;
+    justify-content:space-between;
+  
+    padding:0 8px;
+  
+    font-size:10px;
+  
+    color:var(--text-soft);
+  
+    pointer-events:none;
+  }
+  
+  .ball{
+    width:20px;
+    height:20px;
+  
+    border-radius:50%;
+  
+    background:var(--primary);
+  
+    position:absolute;
+    left:3px;
+  }
+  
+  body.dark .ball{
+    left:30px;
+  }
+  
+  /* ================= TOOLTIP ================= */
+  .tooltip{
+    position:absolute;
+  
+    bottom:130%;
+    left:50%;
+  
+    transform:translateX(-50%);
+  
+    background:var(--glass);
+  
+    color:var(--text);
+  
+    border:1px solid var(--border);
+  
+    padding:8px 12px;
+  
+    border-radius:10px;
+  
+    font-size:10px;
+  
+    white-space:nowrap;
+  
+    opacity:0;
+    pointer-events:none;
+  }
+  
+  .modo:hover .tooltip{
+    opacity:1;
+  }
+  
+  /* ================= AJUDA ================= */
+  .ajuda.low-cortisol{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  
+    padding:8px 12px;
+  
+    border-radius:12px;
+  
+    background:rgba(255,255,255,.05);
+  
+    border:1px solid var(--border);
+  
+    cursor:pointer;
+  }
+  
+  .ajuda.low-cortisol i,
+  .ajuda.low-cortisol span{
+    font-size:11px;
+    color:var(--text-soft);
+  }
+  
+  .ajuda.low-cortisol:hover span{
+    display:none;
+  }
+  
+  .ajuda.low-cortisol:hover::after{
+    content:"Você não precisa de ajuda 💙";
+  
+    font-size:11px;
+    color:var(--text);
+  }
+  
+  /* ================= RESPONSIVO ================= */
+  @media(max-width:1000px){
+  
+    .conteudo{
+      grid-template-columns:1fr;
+      height:auto;
+    }
+  
+    .container{
+      height:auto;
+    }
+  
+    .hero-text h1{
+      font-size:34px;
+    }
+  
+    .beneficios{
+      grid-template-columns:1fr;
+    }
+  
+    .login-box{
+      max-width:420px;
+      width:100%;
+    }
+  }
+  
+  @media(max-width:768px){
+  
+    .topo{
+      flex-direction:column;
+      gap:14px;
+    }
+  
+    .container{
+      padding:16px;
+    }
+  
+    .hero-text h1{
+      font-size:28px;
+    }
+  
+    .hero-text p{
+      font-size:13px;
+    }
+  }
