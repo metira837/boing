@@ -112,7 +112,7 @@ admin = Admin(app, name="Painel Clínico")
 admin.add_view(
     AdminRecepcao(
         Recepcao,
-        db1.session,
+        db1,
         name="Recepção"
     )
 )
@@ -120,7 +120,7 @@ admin.add_view(
 admin.add_view(
     AdminTriagem(
         Triagem,
-        db1.session,
+        db1,
         name="Triagem"
     )
 )
@@ -128,7 +128,7 @@ admin.add_view(
 admin.add_view(
     AdminMedico(
         Medico,
-        db1.session,
+        db1,
         name="Médico"
     )
 )
@@ -136,7 +136,7 @@ admin.add_view(
 admin.add_view(
     AdminFuncionarios(
         Funcionarios,
-        db1.session,
+        db1,
         name="Funcionários"
     )
 )
@@ -245,6 +245,7 @@ def admin_dashboard():
 # =========================================================
 # FUNCIONARIOS
 # =========================================================
+
 @app.route("/dashboard_funcionarios")
 @login_required
 def funcionarios_list():
@@ -261,9 +262,11 @@ def funcionarios_list():
 # =========================================================
 # NOVO FUNCIONARIO
 # =========================================================
+
 @app.route("/funcionario/novo", methods=["GET", "POST"])
 @login_required
 def funcionario_novo():
+    
 
     require_role("administrador")
 
@@ -358,10 +361,6 @@ def funcionarios_editar(id):
 # NOVO PACIENTE
 # =========================================================
 
-# =========================================================
-# NOVO PACIENTE
-# =========================================================
-
 @app.route(
     "/paciente/novo",
     methods=["GET", "POST"]
@@ -406,7 +405,7 @@ def paciente_novo():
     # =====================================================
 
     if form.validate_on_submit():
-
+ 
         foto_path = None
 
         # =================================================
@@ -444,7 +443,7 @@ def paciente_novo():
         # =================================================
 
         novo = Paciente(
-
+            
             nome_completo =
                 form.nome_completo.data,
 
@@ -1078,7 +1077,7 @@ def guia():
 )
 @login_required
 def dashboard_pacientes():
-
+    
     require_role("administrador")
 
     dados = (
@@ -1090,7 +1089,7 @@ def dashboard_pacientes():
 )
 
     return render_template(
-        "pacientes/dashboard_pacientes.html",
+      "pacientes/dashboard_pacientes.html",
         dados=dados
     )
 

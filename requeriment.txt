@@ -1,1 +1,1 @@
-flask_sqlalchemy flask flask_wtf flask_login flask_admin qrcode pillow flask-socketio eventlet
+flask-sqlalchemy flask flask-wtf flask-login flask-admin qrcode pillow flask-socketio 
