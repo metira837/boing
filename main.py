@@ -296,7 +296,7 @@ def funcionario_novo():
             email=form.email.data,
             telefone=form.telefone.data,
             assinatura=form.assinatura.data,
-            assinatura_token=token   # 🔥 AQUI É O FIX PRINCIPAL
+            assinatura_token=token
         )
 
         novo_func.set_senha(form.senha.data)
