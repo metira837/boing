@@ -1092,24 +1092,6 @@ def dashboard_pacientes():
       "pacientes/dashboard_pacientes.html",
         dados=dados
     )
-
-# =========================================================
-# ERROR HANDLERS
-# =========================================================
-@app.errorhandler(403)
-def acesso_negado(error):
-
-    return render_template(
-        "errors/403.html"
-    ), 403
-
-@app.errorhandler(404)
-def pagina_nao_encontrada(error):
-
-    return render_template(
-        "errors/404.html"
-    ), 404
-
 # =========================================================
 # RUN
 # =========================================================
