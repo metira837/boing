@@ -99,6 +99,7 @@ class Recepcao(db1.Model):
     id = db1.Column(db1.Integer, primary_key=True)
 
     paciente_id = db1.Column(db1.String(5),db1.ForeignKey('paciente.id'),nullable=False)
+    nome_completo = db1.Column(db1.String(200))
     urgencia_recepcao = db1.Column(db1.String(50))
     horario_chegada = db1.Column(db1.DateTime,default=datetime.utcnow)
     chamado = db1.Column(db1.Boolean, default=False)
@@ -112,6 +113,12 @@ class Recepcao(db1.Model):
     motivo = db1.Column(db1.Text)
     finalizado = db1.Column(db1.Boolean, default=False)
     assinatura1 = db1.Column(db1.Text)
+    data_nascimento = db1.Column(db1.Date)
+    sexo = db1.Column(db1.String(15))
+    Documento = db1.Column(db1.String(30))
+    contato = db1.Column(db1.String(100))
+    plano = db1.Column(db1.String(50))
+    atendimento = db1.Column(db1.String(40))
 
     # RELACIONAMENTOS
     triagem = db1.relationship('Triagem',backref='recepcao',uselist=False)
