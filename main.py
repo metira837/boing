@@ -631,12 +631,12 @@ def recepcao_selecionar():
 
     if request.method == "POST":
 
-        paciente_id = request.form.get("paciente_id")
+        paciente_id1 = request.form.get("paciente_id")
 
-        paciente = Paciente.query.get_or_404(paciente_id)
-
+        paciente = Paciente.query.get_or_404(paciente_id1)
+    
         novo = Recepcao(
-
+            paciente_id = paciente_id1,
             nome_completo=paciente.nome_completo,
             data_nascimento=paciente.data_nascimento,
             sexo=paciente.sexo,
