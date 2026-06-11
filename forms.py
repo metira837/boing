@@ -455,7 +455,7 @@ class TriagemForm(FlaskForm):
 
     bebida_alcoolica = BooleanField('Bebida alcoólica')
 
-    cirurgia_realizada = TextAreaField(
+    cirugia_realizada = TextAreaField(
         'Cirurgias realizadas',
         validators=[
             Optional(),
@@ -504,7 +504,8 @@ class TriagemForm(FlaskForm):
         ],
         validators=[Optional()]
     )
-
+    urgencia_triagem = TextAreaField("urgencia da triagem",validators=[Optional(), Length(max=50)] )
+    
     submit = SubmitField('Salvar')
 
 

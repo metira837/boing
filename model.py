@@ -98,7 +98,7 @@ class Recepcao(db1.Model):
 
     id = db1.Column(db1.Integer, primary_key=True)
 
-    paciente_id = db1.Column(db1.String(5),db1.ForeignKey('paciente.id'),nullable=False)
+    paciente_id = db1.Column(db1.String(5),db1.ForeignKey('paciente.id'),nullable=False, unique = True)
     nome_completo = db1.Column(db1.String(200))
     urgencia_recepcao = db1.Column(db1.String(50))
     horario_chegada = db1.Column(db1.DateTime,default=datetime.utcnow)
@@ -158,6 +158,7 @@ class Triagem(db1.Model):
     imc = db1.Column(db1.String(20))
     gestante = db1.Column(db1.Boolean)
     tipo_sanguineo = db1.Column(db1.String(5))
+    urgencia_triagem = db1.Column(db1.String(50))
 
 # -------------------------
 # MÉDICO
